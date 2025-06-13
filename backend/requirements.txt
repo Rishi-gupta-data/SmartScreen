@@ -1,0 +1,14 @@
+
+google-generativeai==0.3.2
+pdfplumber==0.10.3
+python-dotenv==1.0.0
+protobuf==4.25.1
+PyPDF2==3.0.1
+plotly==5.3.1
+Flask==2.2.2
+flask-cors==4.0.0
+Werkzeug==2.2.3
+gunicorn==21.2.0
+requests==2.31.0
+streamlit==1.31.0
+streamlit-authenticator==0.1.5
