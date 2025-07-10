@@ -48,13 +48,13 @@ flowchart TD
 
 ```mermaid
 graph LR
-  FE["<b>Frontend</b>"]:::frontend -- "<b>POST /api/analyze</b>" --> BE["<b>Backend</b>"]:::backend
+  FE(["<b>Frontend</b>"]):::frontend -- "<b>POST /api/analyze</b>" --> BE{{"<b>Backend</b>"}}:::backend
   FE -- "<b>POST /api/bulk-analyze</b>" --> BE
   FE -- "<b>POST /api/formatting-suggestions</b>" --> BE
   FE -- "<b>POST /api/keyword-optimization</b>" --> BE
 
-  classDef frontend fill:#b3e0ff,stroke:#000,stroke-width:2px,color:#000;
-  classDef backend fill:#e6ffe6,stroke:#000,stroke-width:2px,color:#000;
+  classDef frontend fill:#e3f2fd,stroke:#1565c0,stroke-width:3px,color:#222;
+  classDef backend fill:#fffde7,stroke:#fbc02d,stroke-width:3px,color:#222;
 ```
 
 ## Folder Structure
