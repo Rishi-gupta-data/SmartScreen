@@ -1,6 +1,6 @@
-# ATS Resume Analyzer
+# SmartScreen ATS
 
-A web application for analyzing resumes against job descriptions using AI, with both individual and bulk analysis modes. Built with a Flask backend and a React frontend.
+SmartScreen ATS is an intelligent, AI-powered Applicant Tracking System designed to revolutionize the recruitment process for both job seekers and recruiters. Leveraging advanced natural language processing and machine learning, it analyzes resumes and job descriptions to deliver highly accurate candidate-job matches. The platform supports both individual and bulk resume analysis, offering actionable feedback and keyword optimization suggestions to candidates. Recruiters benefit from automated candidate ranking, skill extraction, and streamlined filtering, making hiring faster and more effective. With a modern React frontend and a robust Flask backend, SmartScreen ATS ensures a seamless, user-friendly experience. Whether you’re a candidate aiming to optimize your CV or a recruiter seeking the perfect fit, SmartScreen ATS empowers you to make smarter hiring decisions. Unlock the future of recruitment with data-driven insights and automation.
 
 ## Features
 - Analyze individual resumes against job descriptions
@@ -147,6 +147,3 @@ Form Data:
 
 ## Contributing
 Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-[Specify your license here, e.g., MIT] 
