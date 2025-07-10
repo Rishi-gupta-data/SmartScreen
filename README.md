@@ -13,33 +13,48 @@ A web application for analyzing resumes against job descriptions using AI, with 
 
 ```mermaid
 graph TD
-  A["User"] --> B["React Frontend"]
-  B --> C["Flask Backend API"]
-  C --> D[("Database")]
-  C --> E["NLP/ML Models"]
+  A["<b>User</b>"]:::user --> B["<b>React Frontend</b>"]:::frontend
+  B --> C["<b>Flask Backend API</b>"]:::backend
+  C --> D["<b>Database</b>"]:::db
+  C --> E["<b>NLP/ML Models</b>"]:::ml
+
+  classDef user fill:#b3ffd9,stroke:#000,stroke-width:2px,color:#000;
+  classDef frontend fill:#b3e0ff,stroke:#000,stroke-width:2px,color:#000;
+  classDef backend fill:#e6ffe6,stroke:#000,stroke-width:2px,color:#000;
+  classDef db fill:#fff9b3,stroke:#000,stroke-width:2px,color:#000;
+  classDef ml fill:#e6ccff,stroke:#000,stroke-width:2px,color:#000;
 ```
 
 ## Feature Flow
 
 ```mermaid
 flowchart TD
-  Start(["Start"]) --> Mode{"Select Mode"}
-  Mode -- "Individual" --> IndUpload["Upload Resume & JD"]
-  IndUpload --> IndAPI["POST /api/analyze"]
-  IndAPI --> IndResult["Show Analysis & Suggestions"]
-  Mode -- "Bulk" --> BulkUpload["Upload ZIP of Resumes & JD"]
-  BulkUpload --> BulkAPI["POST /api/bulk-analyze"]
-  BulkAPI --> BulkResult["Show Bulk Analysis Results"]
+  Start(["<b>Start</b>"]):::start --> Mode{"<b>Select Mode</b>"}:::mode
+  Mode -- "<b>Individual</b>" --> IndUpload["<b>Upload Resume & JD</b>"]:::upload
+  IndUpload --> IndAPI["<b>POST /api/analyze</b>"]:::api
+  IndAPI --> IndResult["<b>Show Analysis & Suggestions</b>"]:::result
+  Mode -- "<b>Bulk</b>" --> BulkUpload["<b>Upload ZIP of Resumes & JD</b>"]:::upload
+  BulkUpload --> BulkAPI["<b>POST /api/bulk-analyze</b>"]:::api
+  BulkAPI --> BulkResult["<b>Show Bulk Analysis Results</b>"]:::result
+
+  classDef start fill:#b3ffd9,stroke:#000,stroke-width:2px,color:#000;
+  classDef mode fill:#b3e0ff,stroke:#000,stroke-width:2px,color:#000;
+  classDef upload fill:#e6ffe6,stroke:#000,stroke-width:2px,color:#000;
+  classDef api fill:#e6ccff,stroke:#000,stroke-width:2px,color:#000;
+  classDef result fill:#fff9b3,stroke:#000,stroke-width:2px,color:#000;
 ```
 
 ## API Endpoints Overview
 
 ```mermaid
 graph LR
-  FE["Frontend"] -- "POST /api/analyze" --> BE["Backend"]
-  FE -- "POST /api/bulk-analyze" --> BE
-  FE -- "POST /api/formatting-suggestions" --> BE
-  FE -- "POST /api/keyword-optimization" --> BE
+  FE["<b>Frontend</b>"]:::frontend -- "<b>POST /api/analyze</b>" --> BE["<b>Backend</b>"]:::backend
+  FE -- "<b>POST /api/bulk-analyze</b>" --> BE
+  FE -- "<b>POST /api/formatting-suggestions</b>" --> BE
+  FE -- "<b>POST /api/keyword-optimization</b>" --> BE
+
+  classDef frontend fill:#b3e0ff,stroke:#000,stroke-width:2px,color:#000;
+  classDef backend fill:#e6ffe6,stroke:#000,stroke-width:2px,color:#000;
 ```
 
 ## Folder Structure
