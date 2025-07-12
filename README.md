@@ -61,14 +61,24 @@ flowchart TD
 ## API Endpoints Overview
 
 ```mermaid
-graph LR
-  FE(["<b>Frontend</b>"]):::frontend -- "<b>POST /api/analyze</b>" --> BE{{"<b>Backend</b>"}}:::backend
-  FE -- "<b>POST /api/bulk-analyze</b>" --> BE
-  FE -- "<b>POST /api/formatting-suggestions</b>" --> BE
-  FE -- "<b>POST /api/keyword-optimization</b>" --> BE
+flowchart LR
+    API1["🔍 <b>POST</b> /api/analyze"] --> BE["🧠 <b>Backend</b>"]
+    API2["📁 <b>POST</b> /api/bulk-analyze"] --> BE
+    API3["📝 <b>POST</b> /api/formatting-suggestions"] --> BE
+    API4["💡 <b>POST</b> /api/keyword-optimization"] --> BE
+    FE["🖥️ <b>Frontend</b>"] --> API1 & API2 & API3 & API4
 
-  classDef frontend fill:#e3f2fd,stroke:#1565c0,stroke-width:3px,color:#222;
-  classDef backend fill:#fffde7,stroke:#fbc02d,stroke-width:3px,color:#222;
+     API1:::api
+     BE:::backend
+     API2:::api
+     API3:::api
+     API4:::api
+     FE:::frontend
+    
+    classDef api fill:#e1f5fe,stroke:#0288d1,stroke-width:2px,color:#000
+    style BE fill:#ffe9ba
+    style FE fill:#fad7d7
+
 ```
 
 ## Folder Structure
