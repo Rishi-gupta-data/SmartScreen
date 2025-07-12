@@ -29,19 +29,33 @@ graph TD
 
 ```mermaid
 flowchart TD
-  Start(["<b>Start</b>"]):::start --> Mode{"<b>Select Mode</b>"}:::mode
-  Mode -- "<b>Individual</b>" --> IndUpload["<b>Upload Resume & JD</b>"]:::upload
-  IndUpload --> IndAPI["<b>POST /api/analyze</b>"]:::api
-  IndAPI --> IndResult["<b>Show Analysis & Suggestions</b>"]:::result
-  Mode -- "<b>Bulk</b>" --> BulkUpload["<b>Upload ZIP of Resumes & JD</b>"]:::upload
-  BulkUpload --> BulkAPI["<b>POST /api/bulk-analyze</b>"]:::api
-  BulkAPI --> BulkResult["<b>Show Bulk Analysis Results</b>"]:::result
+    Start(["<b>Start</b>"]) --> Mode["<b>Select Mode</b>"]
+    Mode --> IndBox["<b>Individual Mode</b>"] & BulkBox["<b>Bulk Mode</b>"]
+    IndBox --> IndUpload["<b>Upload Resume &amp; JD</b>"]
+    IndUpload --> IndAPI["<b>POST /api/analyze</b>"]
+    IndAPI --> IndResult["<b>Show Analysis &amp; Suggestions</b>"]
+    BulkBox --> BulkUpload["<b>Upload ZIP of Resumes &amp; JD</b>"]
+    BulkUpload --> BulkAPI["<b>POST /api/bulk-analyze</b>"]
+    BulkAPI --> BulkResult["<b>Show Bulk Analysis Results</b>"]
 
-  classDef start fill:#b3ffd9,stroke:#000,stroke-width:2px,color:#000;
-  classDef mode fill:#b3e0ff,stroke:#000,stroke-width:2px,color:#000;
-  classDef upload fill:#e6ffe6,stroke:#000,stroke-width:2px,color:#000;
-  classDef api fill:#e6ccff,stroke:#000,stroke-width:2px,color:#000;
-  classDef result fill:#fff9b3,stroke:#000,stroke-width:2px,color:#000;
+     Start:::start
+     Mode:::mode
+     IndBox:::indmode
+     IndUpload:::upload
+     IndAPI:::api
+     IndResult:::result
+     BulkBox:::bulkmode
+     BulkUpload:::upload
+     BulkAPI:::api
+     BulkResult:::result
+    classDef start fill:#b3ffd9,stroke:#000,stroke-width:2px,color:#000
+    classDef mode fill:#b3e0ff,stroke:#000,stroke-width:2px,color:#000
+    classDef indmode fill:#d1e7dd,stroke:#000,stroke-width:2px,color:#000
+    classDef bulkmode fill:#f8d7da,stroke:#000,stroke-width:2px,color:#000
+    classDef upload fill:#e6ffe6,stroke:#000,stroke-width:2px,color:#000
+    classDef api fill:#e6ccff,stroke:#000,stroke-width:2px,color:#000
+    classDef result fill:#fff9b3,stroke:#000,stroke-width:2px,color:#000
+    style IndBox fill:#FFCDD2
 ```
 
 ## API Endpoints Overview
