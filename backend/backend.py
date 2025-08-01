@@ -16,8 +16,6 @@ from typing import List, Tuple, Optional
 # Load environment variables
 load_dotenv()
 genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-
-# Configure logging
 logging.basicConfig(level=logging.INFO)
 
 class ATSBackend:
@@ -25,7 +23,7 @@ class ATSBackend:
         self.model = genai.GenerativeModel('gemini-1.5-pro-latest')
         self.resume_text = None
         self.job_description = None
-        # removed: self.nlp = spacy.load("en_core_web_sm")
+        
 
     def extract_text_from_pdf(self, uploaded_file):
         """Extracts text from an uploaded PDF file or file path."""
@@ -425,7 +423,7 @@ class ATSBackend:
                 logging.error(f"Invalid resume_text type: {type(resume_text)}. Expected str.")
                 raise ValueError("Invalid resume_text type. Expected a string.")
 
-            logging.info(f"Analyzing resume: {resume_text[:500]}")  # Log first 500 chars only
+            logging.info(f"Analyzing resume: {resume_text[:500]}")  
 
             # Sanitize inputs to avoid issues with special characters
             resume_text = self.sanitize_input(resume_text)
@@ -529,22 +527,21 @@ And here's the candidate's resume:
             raise ValueError("GOOGLE_API_KEY not found in environment.")
 
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("models/")  # Updated model name
+        model = genai.GenerativeModel("models/")  
 
         try:
             response = model.generate_content(prompt)
             return response.text
         except Exception as e:
             logging.error(f"LLM generation failed: {e}")  # Log LLM failures specifically
-            raise  # Re-raise so analyze_resume handles it
-
+            raise  
     def parse_bulk_analysis_response(self, response_text: str) -> dict:
         """Parses the text response from the LLM based on the bulk analysis prompt."""
         try:
             # Split the response into sections
             sections = response_text.split('\n\n')
 
-            # Initialize a dictionary to hold the extracted data
+           
             analysis = {}
 
             # Extract Suitability Assessment
@@ -560,7 +557,7 @@ And here's the candidate's resume:
             for section in sections:
                 if section.startswith("**Key Strengths:**"):
                     strengths = section.split('**Key Strengths:**')[1].strip().split('\n- ')
-                    # Remove the first empty element if it exists
+                   
                     if strengths and strengths[0] == '':
                         strengths.pop(0)  # This is crucial for avoiding the extra empty element!
                     analysis["Key Strengths"] = [s.strip() for s in strengths]  # Store as a list of strings
@@ -633,20 +630,8 @@ And here's the candidate's resume:
 class BulkATSBackend:
     def __init__(self, ats_backend: ATSBackend):
         self.resumes_data: List[Tuple[str, str]] = []  # Store extracted resume texts
-        self.ats_backend = ats_backend  # Store the ATSBackend instance
+        self.ats_backend = ats_backend  
 
-    # Remove this duplicate method:
-    # def extract_text_from_pdf(self, file_path: str) -> Optional[str]:
-    #     """Extract text from a single PDF file."""
-    #     try:
-    #         with pdfplumber.open(file_path) as pdf:
-    #             text = "\n".join([page.extract_text() for page in pdf.pages if page.extract_text()])
-    #         if not text.strip():
-    #             logging.warning(f"No text extracted from {file_path}. Skipping.")
-    #         return text
-    #     except Exception as e:
-    #         logging.error(f"Error extracting text from PDF {file_path}: {e}")
-    #         return None  # Return None
 
     def extract_text_from_zip(self, uploaded_file):
         """Extract text from uploaded ZIP file containing resumes."""
@@ -702,9 +687,7 @@ class BulkATSBackend:
 
                 suitability = "Suitable" if match_score > 70 else "Not Suitable"
                 analysis["Suitability"] = suitability
-                # ---------------------------------------------------------------
-
-                # Structure results as per your data
+                
                 results.append({
                     "filename": filename,
                     "Suitability": analysis.get("Suitability", "N/A"),
