@@ -120,6 +120,25 @@ The backend runs on `http://localhost:5000` and the frontend on `http://localhos
 - `POST /api/formatting-suggestions`: Get formatting suggestions for a resume
 - `POST /api/keyword-optimization`: Get keyword optimization suggestions
 
+
+## 🛠 Tools & Technologies
+- Python  
+- Flask  
+- React.js  
+- Pandas  
+- Scikit-learn  
+- Tailwind CSS  
+- Gemini AI  
+- Google Generative AI API  
+- PDFMiner  
+
+## 🔬 Techniques Used
+- Prompt Engineering  
+- Cosine Similarity  
+- Named Entity Recognition (NER)  
+- Keyword Matching
+
+
 ### Sample Backend Route (Flask)
 ```python
 @app.route('/api/analyze', methods=['POST'])
