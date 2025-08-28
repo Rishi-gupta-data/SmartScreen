@@ -17,7 +17,7 @@ export const analyzeResume = async (formData) => {
 
 export const analyzeBulkResumes = async (formData) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/analyze-bulk`, formData, {
+    const response = await axios.post(`${API_BASE_URL}/bulk-analyze`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

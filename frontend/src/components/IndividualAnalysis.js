@@ -19,34 +19,19 @@ function IndividualAnalysis({ onBack }) {
     setError('');
     setAnalysis(null);
 
-    // MOCK: Simulate backend response
-    setTimeout(() => {
-      setAnalysis({
-        "Match Percentage": "65%",
-        "Found Keywords": ["Python", "SQL", "Power BI"],
-        "Missing Keywords": ["R", "TensorFlow"],
-        "Key Strengths": ["Strong Python and SQL skills."],
-        "Areas for Improvement": ["Add experience with cloud platforms."],
-        "Resume Formatting & Optimization Tips": ["Use a consistent font."]
+    const formData = new FormData();
+    formData.append('resume', resumeFile);
+    formData.append('job_description', jobDescription);
+    try {
+      const response = await axios.post('http://localhost:5000/api/analyze', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
+      setAnalysis(response.data);
+    } catch (err) {
+      setError(err.response?.data?.error || 'Error analyzing resume');
+    } finally {
       setLoading(false);
-    }, 1500);
-
-    // --- Comment out the real backend call below while testing frontend ---
-    // const formData = new FormData();
-    // formData.append('resume', resumeFile);
-    // formData.append('job_description', jobDescription);
-
-    // try {
-    //   const response = await axios.post('http://localhost:5000/api/analyze', formData, {
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   });
-    //   setAnalysis(response.data);
-    // } catch (err) {
-    //   setError(err.response?.data?.error || 'Error analyzing resume');
-    // } finally {
-    //   setLoading(false);
-    // }
+    }
   };
 
   return (
