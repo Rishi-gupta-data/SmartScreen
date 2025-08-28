@@ -527,7 +527,7 @@ And here's the candidate's resume:
             raise ValueError("GOOGLE_API_KEY not found in environment.")
 
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("models/")  
+        model = genai.GenerativeModel("Gemini 2.0 Flash")  
 
         try:
             response = model.generate_content(prompt)
@@ -720,7 +720,7 @@ class BulkATSBackend:
             raise ValueError("GOOGLE_API_KEY not found in environment.")
 
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-pro")  # Or the model you prefer
+        model = genai.GenerativeModel("gemini-1.5-pro-latest")  # Or the model you prefer
 
         try:
             response = model.generate_content(prompt)

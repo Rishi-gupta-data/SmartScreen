@@ -16,46 +16,18 @@ const BulkAnalysis = ({ onBack }) => {
     setError(null);
     setResults(null);
 
-    // MOCK: Simulate backend response for frontend testing
-    setTimeout(() => {
-      setResults([
-        {
-          name: "Resume1.pdf",
-          "Match Percentage": "80%",
-          "Suitability": "Suitable", // Added
-          "Found Keywords": ["Python", "SQL", "Power BI"],
-          "Missing Keywords": ["R", "TensorFlow"],
-          "Key Strengths": ["Strong Python and SQL skills."],
-          "Areas for Improvement": ["Add experience with cloud platforms."],
-          "Resume Formatting & Optimization Tips": ["Use a consistent font."]
-        },
-        {
-          name: "Resume2.pdf",
-          "Match Percentage": "60%",
-          "Suitability": "Not Suitable", // Added
-          "Found Keywords": ["Java", "Excel"],
-          "Missing Keywords": ["Python", "Power BI"],
-          "Key Strengths": ["Good Java skills."],
-          "Areas for Improvement": ["Add data analytics experience."],
-          "Resume Formatting & Optimization Tips": ["Improve section headings."]
-        }
-      ]);
+    
+    try {
+      const formData = new FormData();
+      formData.append('resumes', file);
+      formData.append('job_description', jobDescription);
+      const data = await analyzeBulkResumes(formData);
+      setResults(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setLoading(false);
-    }, 1500);
-
-    // --- Comment out the real backend call below while testing frontend ---
-    // try {
-    //   const formData = new FormData();
-    //   formData.append('resumes', file);
-    //   formData.append('job_description', jobDescription);
-
-    //   const data = await analyzeBulkResumes(formData);
-    //   setResults(data);
-    // } catch (err) {
-    //   setError(err.message);
-    // } finally {
-    //   setLoading(false);
-    // }
+    }
   };
 
   return (
