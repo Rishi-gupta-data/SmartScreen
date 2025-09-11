@@ -90,29 +90,58 @@ ATS_ai/
   .gitignore    # Git ignore rules
 ```
 
-## Setup Instructions
+## Backend Setup
 
-### Prerequisites
-- Python 3.8+
-- Node.js 14+
+1.  Navigate to the `backend` directory:
+    ```bash
+    cd backend
+    ```
+2.  Create a virtual environment:
+    ```bash
+    python -m venv venv
+    ```
+3.  Activate the virtual environment:
+    *   On Windows:
+        ```bash
+        venv\Scripts\activate
+        ```
+    *   On macOS and Linux:
+        ```bash
+        source venv/bin/activate
+        ```
+4.  Install the required dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-### Backend Setup
-```bash
-cd backend
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install -r requirements.txt
-python app.py
-```
+## Frontend Setup
 
-### Frontend Setup
-```bash
-cd frontend
-npm install
-npm start
-```
+1.  Navigate to the `frontend` directory:
+    ```bash
+    cd frontend
+    ```
+2.  Install the required dependencies:
+    ```bash
+    npm install
+    ```
 
-The backend runs on `http://localhost:5000` and the frontend on `http://localhost:3000` by default.
+## Running the Application
+
+1.  **Start the Backend Server:**
+    *   Navigate to the `backend` directory and run the following command:
+        ```bash
+        python app.py
+        ```
+    *   The backend server will start on `http://localhost:5000`.
+
+2.  **Start the Frontend Development Server:**
+    *   Navigate to the `frontend` directory and run the following command:
+        ```bash
+        npm start
+        ```
+    *   The frontend development server will start on `http://localhost:3000`.
+
+3.  Open your web browser and navigate to `http://localhost:3000` to use the application.
 
 ## API Endpoints
 - `POST /api/analyze`: Analyze a single resume (PDF) and job description
