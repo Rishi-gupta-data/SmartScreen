@@ -20,15 +20,9 @@
     }
   },
 
-  "features": {
-    "ghcr.io/devcontainers/features/node:1": {
-      "version": "20"
-    }
-  },
-
   "updateContentCommand": "sudo apt update && sudo apt upgrade -y && if [ -f packages.txt ]; then sudo xargs apt install -y < packages.txt; fi && if [ -f requirements.txt ]; then pip install --user -r requirements.txt; fi",
 
-  "postCreateCommand": "node --version && npm --version && npm install -g @google/gemini-cli",
+  "postCreateCommand": "export NVM_DIR=/usr/local/share/nvm && . $NVM_DIR/nvm.sh && nvm install 20 && nvm alias default 20 && npm install -g @google/gemini-cli",
 
   "forwardPorts": [8501],
 
