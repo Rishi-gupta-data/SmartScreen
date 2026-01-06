@@ -1,8 +1,7 @@
 # backend/config.py
 import os
 
-# Build the absolute path for the database file
-# This ensures that the path is correct regardless of where the app is run from
+
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 # Define the path for the data directory
@@ -20,8 +19,17 @@ class Config:
     # Data folders
     RESUMES_FOLDER = os.path.join(DATA_DIR, 'resumes')
     JOBS_FOLDER = os.path.join(DATA_DIR, 'jobs')
+
+    # LLM Configuration 
+    LLM_PROVIDER = os.environ.get('LLM_PROVIDER', None)  # e.g., 'OLLAMA'
+    OLLAMA_BASE_URL = os.environ.get('OLLAMA_BASE_URL', 'http://127.0.0.1:11434')
+    OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'phi3:mini')
+
+    # Admin Credentials
+    ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'rishi')
+    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', '9711')
     
-    # Ensure data directories exist
+ 
     @staticmethod
     def init_app(app):
         os.makedirs(Config.RESUMES_FOLDER, exist_ok=True)
@@ -34,9 +42,7 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     """Production configuration."""
     DEBUG = False
-    # Add any production-specific settings here
-
-# Dictionary to access config classes by name
+    #
 config_by_name = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,

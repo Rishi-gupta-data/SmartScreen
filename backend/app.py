@@ -1,40 +1,46 @@
-# backend/app.py
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+import os
+from flask import Flask, jsonify
 from flask_cors import CORS
+from backend.models.db import db, init_db
+from backend.api.resume_api import resume_api
+from backend.api.job_api import job_api
+from backend.api.match_api import match_api
+from backend.api.llm_api import llm_api
 
-from backend.config import config_by_name
-from backend.models.db import db  # Import the db instance
-
-def create_app(config_name='default'):
-    """
-    Application factory function.
-    """
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config_by_name[config_name])
-    
-    # Initialize extensions
-    CORS(app)
-    db.init_app(app)
-    
-    # Initialize config static method if any
-    config_by_name[config_name].init_app(app)
+    CORS(app)  # Enable CORS for all origins by default
+
+    # Configuration
+    database_path = os.path.join(app.root_path, '..', 'data', 'ats.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.abspath(database_path)}'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, '../data/resumes')
+    app.config['JOB_DESCRIPTION_FOLDER'] = os.path.join(app.root_path, '../data/jobs')
+
+    # Initialize DB
+    init_db(app)
 
     # Register blueprints
-    from .api.resume_api import resume_bp
-    from .api.job_api import job_bp
-    from .api.match_api import match_bp
-    
-    app.register_blueprint(resume_bp, url_prefix='/api/resumes')
-    app.register_blueprint(job_bp, url_prefix='/api/jobs')
-    app.register_blueprint(match_bp, url_prefix='/api/match')
+    app.register_blueprint(resume_api, url_prefix='/api')
+    app.register_blueprint(job_api, url_prefix='/api')
+    app.register_blueprint(match_api, url_prefix='/api')
+    app.register_blueprint(llm_api, url_prefix='/api')
 
-    with app.app_context():
-        # Create database tables if they don't exist
-        db.create_all()
+    @app.route('/')
+    def index():
+        return jsonify({"message": "SmartScreen ATS Backend API"})
 
-    @app.route('/health')
-    def health_check():
-        return "OK", 200
+    @app.errorhandler(404)
+    def not_found(error):
+        return jsonify({"error": "Not found"}), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        return jsonify({"error": "Internal server error"}), 500
 
     return app
+
+if __name__ == '__main__':
+    app = create_app()
+    app.run(debug=True)

@@ -1,0 +1,35 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+  <h2>System Dashboard</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">CPU</h3>
+          </div>
+          <div class="card-body">
+            <p><strong>Usage:</strong> {{ cpu_percent }}%</p>
+            <p><strong>Core Count:</strong> {{ cpu_count }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Memory</h3>
+          </div>
+          <div class="card-body">
+            <p><strong>Total:</strong> {{ memory_stats.total / (1024*1024*1024)|round(2) }} GB</p>
+            <p><strong>Available:</strong> {{ memory_stats.available / (1024*1024*1024)|round(2) }} GB</p>
+            <p><strong>Used:</strong> {{ memory_stats.used / (1024*1024*1024)|round(2) }} GB</p>
+            <p><strong>Usage:</strong> {{ memory_stats.percent }}%</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ super() }}
+{% endblock %}

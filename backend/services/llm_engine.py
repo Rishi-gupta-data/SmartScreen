@@ -1,47 +1,81 @@
-# backend/services/llm_engine.py
-import logging
+import os
+import requests
+import json
 
 class LLMEngine:
-    """
-    An abstracted service for interacting with a Large Language Model (LLM).
+    def __init__(self, ollama_url: str = "http://localhost:11434"):
+        self.ollama_url = ollama_url
+        self.llm_enabled = self._check_ollama_status()
+        self.default_model = os.getenv("OLLAMA_DEFAULT_MODEL", "llama2")
 
-    In the MVP, this service is a placeholder and does not connect to any LLM.
-    Its methods are designed to fail gracefully or do nothing, ensuring the
-    application can run without any LLM installed or configured.
-    """
+    def _check_ollama_status(self) -> bool:
+        """Checks if the Ollama server is running."""
+        try:
+            response = requests.get(f"{self.ollama_url}/api/version", timeout=1)
+            response.raise_for_status()
+            print("Ollama server is running.")
+            return True
+        except requests.exceptions.ConnectionError:
+            print(f"Ollama server not reachable at {self.ollama_url}. LLM functionality disabled.")
+            return False
+        except requests.exceptions.RequestException as e:
+            print(f"Error checking Ollama status: {e}. LLM functionality disabled.")
+            return False
 
-    def __init__(self):
-        logging.info("LLMEngine initialized. NOTE: LLM is disabled in the current configuration.")
-        self.enabled = False
+    def _check_model_available(self, model_name: str) -> bool:
+        """Checks if a specific model is available in Ollama."""
+        if not self.llm_enabled:
+            return False
+        try:
+            # Ollama's /api/show endpoint to check model details
+            response = requests.post(f"{self.ollama_url}/api/show", json={"name": model_name}, timeout=5)
+            response.raise_for_status()
+            if response.status_code == 200:
+                print(f"Ollama model '{model_name}' is available.")
+                return True
+            return False
+        except requests.exceptions.RequestException as e:
+            print(f"Ollama model '{model_name}' not available or error checking: {e}")
+            return False
 
-    def get_suggestions(self, resume_text: str, job_description_text: str) -> dict:
-        """
-        Provides suggestions for improving a resume.
-        
-        This is a placeholder and will not provide real suggestions.
-        """
-        if not self.enabled:
-            logging.warning("LLM is not enabled. Cannot provide suggestions.")
-            return {
-                "error": "LLM engine is not configured. This feature is disabled."
+    def is_llm_ready(self, model_name: str = None) -> bool:
+        """Checks if LLM functionality is ready (Ollama running and model available)."""
+        if not self.llm_enabled:
+            return False
+        model_to_check = model_name if model_name else self.default_model
+        return self._check_model_available(model_to_check)
+
+    def generate_response(self, prompt: str, model: str = None) -> str:
+        """Generates a response using the specified Ollama model."""
+        if not self.llm_enabled:
+            return "LLM functionality is disabled (Ollama not running)."
+
+        target_model = model if model else self.default_model
+        if not self.is_llm_ready(target_model): # Use is_llm_ready to re-check model availability
+            return f"LLM model '{target_model}' not available in Ollama or Ollama not running."
+
+        try:
+            headers = {"Content-Type": "application/json"}
+            data = {
+                "model": target_model,
+                "prompt": prompt,
+                "stream": False # We want a single response
             }
-        
-        # In a future implementation, this would call an LLM.
-        raise NotImplementedError("LLM interaction is not implemented in the MVP.")
+            response = requests.post(f"{self.ollama_url}/api/generate", headers=headers, json=data, timeout=300)
+            response.raise_for_status()
+            result = response.json()
+            return result.get("response", "No response generated.")
+        except requests.exceptions.RequestException as e:
+            return f"Error generating response from Ollama: {e}"
 
-    def get_keyword_optimization(self, resume_text: str, job_description_text: str) -> dict:
-        """
-        Provides keyword optimization tips.
-
-        This is a placeholder and will not provide real optimization.
-        """
-        if not self.enabled:
-            logging.warning("LLM is not enabled. Cannot provide keyword optimization.")
-            return {
-                "error": "LLM engine is not configured. This feature is disabled."
-            }
-
-        raise NotImplementedError("LLM interaction is not implemented in the MVP.")
-
-# Single instance to be used across the application
-llm_engine = LLMEngine()
+# Example usage (for testing, will be removed later or wrapped in a test)
+if __name__ == '__main__':
+    llm_engine = LLMEngine()
+    if llm_engine.is_llm_ready():
+        print("LLM is ready to generate responses.")
+        test_prompt = "Tell me a short story about a brave knight."
+        print(f"\nGenerating response for: '{test_prompt}'")
+        response = llm_engine.generate_response(test_prompt)
+        print(f"Response: {response}")
+    else:
+        print("LLM is not ready.")
