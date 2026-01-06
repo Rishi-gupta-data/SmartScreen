@@ -28,7 +28,7 @@ def generate_llm_response():
 
     response_text = llm_engine.generate_response(prompt, model)
     
-    # Check if the response_text indicates an error from LLMEngine
+
     if "LLM functionality is disabled" in response_text or "not available in Ollama" in response_text or "Error generating response" in response_text:
         return jsonify({"error": response_text}), 503
     
