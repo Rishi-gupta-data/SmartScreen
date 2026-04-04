@@ -38,9 +38,14 @@ def initialize_database():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    print("This script will re-initialize the database, deleting all existing data.")
-    confirm = input("Are you sure you want to continue? (y/n): ")
-    if confirm.lower() == 'y':
+    
+    force_init = '--force' in sys.argv
+    if force_init:
         initialize_database()
     else:
-        print("Database initialization cancelled.")
+        print("This script will re-initialize the database, deleting all existing data.")
+        confirm = input("Are you sure you want to continue? (y/n): ")
+        if confirm.lower() == 'y':
+            initialize_database()
+        else:
+            print("Database initialization cancelled.")

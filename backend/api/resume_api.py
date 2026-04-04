@@ -19,7 +19,7 @@ def upload_resume():
     if file:
         filename = secure_filename(file.filename)
         # Ensure the resumes directory exists
-        upload_folder = os.path.join(current_app.root_path, '..', 'data', 'resumes')
+        upload_folder = current_app.config['RESUMES_FOLDER']
         os.makedirs(upload_folder, exist_ok=True)
         
         file_path = os.path.join(upload_folder, filename)

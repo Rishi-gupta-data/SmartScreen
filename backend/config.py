@@ -1,6 +1,9 @@
 # backend/config.py
 import os
+from dotenv import load_dotenv
 
+# Load environment variables from .env file
+load_dotenv()
 
 BASE_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
@@ -12,6 +15,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY', 'your-secret-key')
     
     # Database configuration
+    # For Supabase: postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(DATA_DIR, 'ats.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
@@ -20,10 +24,8 @@ class Config:
     RESUMES_FOLDER = os.path.join(DATA_DIR, 'resumes')
     JOBS_FOLDER = os.path.join(DATA_DIR, 'jobs')
 
-    # LLM Configuration 
-    LLM_PROVIDER = os.environ.get('LLM_PROVIDER', None)  # e.g., 'OLLAMA'
-    OLLAMA_BASE_URL = os.environ.get('OLLAMA_BASE_URL', 'http://127.0.0.1:11434')
-    OLLAMA_MODEL = os.environ.get('OLLAMA_MODEL', 'phi3:mini')
+    # NLP & Embedding Configuration
+    HF_EMBEDDING_MODEL = os.environ.get('HF_EMBEDDING_MODEL', 'sentence-transformers/all-MiniLM-L6-v2')
 
     # Admin Credentials
     ADMIN_USERNAME = os.environ.get('ADMIN_USERNAME', 'rishi')

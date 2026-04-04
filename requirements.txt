@@ -1,10 +1,11 @@
-# Flask
+# Database
+psycopg2-binary
 Flask
 Flask-Cors
 Flask-SQLAlchemy
 
-
 # NLP & Matching
+sentence-transformers
 spacy
 numpy
 
@@ -12,15 +13,9 @@ numpy
 pdfplumber
 python-docx
 
-# LLM (Optional)
-
-
 # System Monitoring
 psutil
 
 # Utilities
 python-dotenv
 Werkzeug
-
-# Frontend
-

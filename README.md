@@ -151,19 +151,17 @@ ATS_ai/
 
 
 ## 🛠 Tools & Technologies
-- Python  
-- Flask  
-- React.js  
-- Pandas  
-- Scikit-learn  
-- Tailwind CSS  
-- Gemini AI  
-- Google Generative AI API  
-- PDFMiner  
+- Sentence-Transformers (all-MiniLM-L6-v2) for semantic matching
+- Python
+- Flask
+- React.js
+- Scikit-learn
+- PDFMiner
+- SpaCy (for text normalization)
 
 ## 🔬 Techniques Used
-- Prompt Engineering  
 - Cosine Similarity  
+- Semantic Embeddings (Sentence-Transformers)
 - Named Entity Recognition (NER)  
 - Keyword Matching
 

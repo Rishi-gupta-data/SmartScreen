@@ -3,16 +3,13 @@ import spacy
 from backend.models.db import db
 from backend.models.candidate import Candidate
 from backend.utils.file_utils import extract_text_from_file
+from sentence_transformers import SentenceTransformer
 
 class ResumeParser:
     def __init__(self):
-        # Load the spaCy model
-        try:
-            self.nlp = spacy.load("en_core_web_md")
-        except OSError:
-            print("Downloading spaCy model 'en_core_web_md'...")
-            spacy.cli.download("en_core_web_md")
-            self.nlp = spacy.load("en_core_web_md")
+        # Load the sentence-transformer model
+        model_name = os.getenv("HF_EMBEDDING_MODEL", "sentence-transformers/all-MiniLM-L6-v2")
+        self.model = SentenceTransformer(model_name)
 
     def process_resume(self, file_path: str) -> Candidate:
         """
@@ -25,9 +22,9 @@ class ResumeParser:
         if not extracted_text:
             raise ValueError(f"Could not extract text from {filename}")
 
-        # Generate embedding
-        doc = self.nlp(extracted_text)
-        embedding = doc.vector.tobytes() # Store as bytes for PickleType
+        # Generate embedding using SentenceTransformer
+        embedding_vec = self.model.encode(extracted_text)
+        embedding = embedding_vec.tobytes() # Store as bytes for PickleType
 
         candidate = Candidate(
             filename=filename,

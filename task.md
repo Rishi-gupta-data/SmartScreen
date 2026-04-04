@@ -52,7 +52,7 @@ scripts/
   ```python
   LLM_PROVIDER = "none" | "ollama"
   OLLAMA_BASE_URL = "http://localhost:11434"
-  OLLAMA_MODEL = "phi3:mini"
+  OLLAMA_MODEL = "openai/gpt-oss-120b"
   ```
 
 ✅ Outcome: Centralized, environment-agnostic configuration
@@ -97,66 +97,13 @@ Implement `services/resume_parser.py`:
 
 ### Task 4.1 – Semantic Matching
 Implement `services/matcher.py`:
-- Use SpaCy embeddings
+- Use `sentence-transformers/all-MiniLM-L6-v2` for high-quality semantic embeddings
 - Compute cosine similarity
 - Output:
 - Match score (0–100)
-- Skill overlap indicators (optional)
 
-### Task 4.2 – Match Persistence
-- Store results in `Match` table
-- Link `Candidate ↔ Job`
-
-✅ Outcome: Deterministic, offline resume-job scoring
-
----
-
-## 🌐 Phase 5: API Layer
-
-### Task 5.1 – Resume API
-- Upload resumes
-- Parse and store candidate data
-
-### Task 5.2 – Job API
-- Create and manage job descriptions
-
-### Task 5.3 – Match API
-- Trigger matching
-- Fetch ranked candidates for a job
-
-Refactor `backend/app.py` as an **application factory**.
-
-✅ Outcome: Clean RESTful backend interface
-
----
-
-## 🤖 Phase 6: Optional Local LLM Integration (Ollama)
-
-> ⚠️ **This phase is OPTIONAL. Core MVP must work without it.**
-
-### Task 6.1 – LLM Abstraction
-- Implement `services/llm_engine.py`
-- Handle provider switching via config
-- Default to disabled
-
-### Task 6.2 – Ollama Integration
-- Use OpenAI-compatible client
-- Connect to local Ollama server
-- Support lightweight models (e.g. `phi3:mini`)
-
-### Task 6.3 – Suggestions API
-Add endpoint:
-
-
-GET /api/suggestions/match/<match_id>
-
-
-- Generate:
-  - Resume improvement suggestions
-  - Skill gap explanations
-- Fail gracefully if Ollama is unavailable
-
-✅ Outcome: Explainable AI without cloud dependency
+### Phase 6: Removed (Ollama/LLM Integration)
+> Note: LLM generative features have been removed to focus on efficient, local semantic matching.
 
 ---
 

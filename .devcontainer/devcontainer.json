@@ -26,7 +26,7 @@
     }
   },
 
-  "updateContentCommand": "sudo apt update && sudo apt upgrade -y && if [ -f packages.txt ]; then sudo xargs apt install -y < packages.txt; fi && if [ -f requirements.txt ]; then pip install --user -r requirements.txt; fi",
+  "updateContentCommand": "sudo rm -f /etc/apt/sources.list.d/yarn.list && sudo apt update && sudo apt upgrade -y && if [ -f packages.txt ]; then sudo xargs apt install -y < packages.txt; fi && if [ -f requirements.txt ]; then pip install --user -r requirements.txt; fi",
 
   "postCreateCommand": "node --version && npm --version && npm install -g @google/gemini-cli",
 
