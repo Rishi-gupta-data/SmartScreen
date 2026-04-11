@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #FAF7F0;
+}
+
+.creative-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  background: linear-gradient(45deg, #B17457 30%, #4A4947 90%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.expander {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.analysis-tip {
+  background-color: #f0f2f6;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.match-percentage {
+  font-size: 2rem;
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.file-upload {
+  margin: 1rem 0;
+}
+
+.success-message {
+  color: #4CAF50;
+  margin: 1rem 0;
+}
+
+.error-message {
+  color: #f44336;
+  margin: 1rem 0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
