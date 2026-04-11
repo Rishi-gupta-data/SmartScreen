@@ -13,6 +13,7 @@ from backend.models.db import db, init_db
 from backend.api.resume_api import resume_api
 from backend.api.job_api import job_api
 from backend.api.match_api import match_api
+from backend.api.analyze_api import analyze_api
 from backend.config import config_by_name
 
 def create_app(config_name=None):
@@ -33,6 +34,7 @@ def create_app(config_name=None):
     app.register_blueprint(resume_api, url_prefix='/api')
     app.register_blueprint(job_api, url_prefix='/api')
     app.register_blueprint(match_api, url_prefix='/api')
+    app.register_blueprint(analyze_api, url_prefix='/api')
 
     @app.route('/')
     def index():
