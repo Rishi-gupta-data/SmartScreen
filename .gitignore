@@ -19,3 +19,6 @@ Thumbs.db
 
 # Misc
 *.zip 
+
+.env
+backend/.env
