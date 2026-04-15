@@ -45,7 +45,7 @@ def get_user_by_email(db: Session, email: str):
 
 def create_user(db: Session, email: str, password: str) -> User:
     hashed = get_password_hash(password)
-    user = User(email=email, hashed_password=hashed, credits=0)
+    user = User(email=email, hashed_password=hashed, credits=100)
     db.add(user)
     db.commit()
     db.refresh(user)
