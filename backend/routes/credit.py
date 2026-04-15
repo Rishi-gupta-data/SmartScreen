@@ -8,7 +8,7 @@ from backend.utils.deps import get_current_user, admin_only
 router = APIRouter(prefix="/credits", tags=["credits"]) 
 
 
-@router.get("/")
+@router.get("")  # ✅ Normalized: no trailing slash
 def get_credits(current_user=Depends(get_current_user), db: Session = Depends(get_db)):
     try:
         balance = credit_service.check_balance(db, current_user["id"])

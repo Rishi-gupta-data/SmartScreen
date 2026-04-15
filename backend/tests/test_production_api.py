@@ -6,8 +6,13 @@ Tests all endpoints to ensure production readiness
 import requests
 import json
 import sys
+import os
 from typing import Dict, Any, Optional
 import time
+
+# Fix Windows encoding issues
+if sys.platform == 'win32':
+    os.system('mode con: cols=100 lines=30')
 
 # Configuration
 BASE_URL = "http://localhost:8000"  # Change to production URL
@@ -83,22 +88,22 @@ def print_header(text: str):
 
 def print_success(text: str):
     """Print success message."""
-    print(f"{GREEN}✅ {text}{END}")
+    print(f"{GREEN}[OK] {text}{END}")
 
 
 def print_error(text: str):
     """Print error message."""
-    print(f"{RED}❌ {text}{END}")
+    print(f"{RED}[ERROR] {text}{END}")
 
 
 def print_info(text: str):
     """Print info message."""
-    print(f"{BLUE}ℹ️  {text}{END}")
+    print(f"{BLUE}[INFO] {text}{END}")
 
 
 def print_test(test_name: str):
     """Print test name."""
-    print(f"\n{YELLOW}▶️  {test_name}{END}")
+    print(f"\n{YELLOW}>>> {test_name}{END}")
 
 
 def make_request(
@@ -128,11 +133,11 @@ def make_request(
             return False, None
         
         if response.status_code == expected_status:
-            print_success(f"{method} {endpoint} → {response.status_code}")
+            print_success(f"{method} {endpoint} -> {response.status_code}")
             return True, response.json() if response.text else {}
         else:
             print_error(
-                f"{method} {endpoint} → {response.status_code} "
+                f"{method} {endpoint} -> {response.status_code} "
                 f"(expected {expected_status})\n"
                 f"Response: {response.text[:200]}"
             )
@@ -183,7 +188,7 @@ def test_signup():
     }
     
     success, response = make_request(
-    "POST", "/auth/signup", data=payload, expected_status=200
+    "POST", "/api/v1/auth/signup", data=payload, expected_status=200
     )
     
     if success:
@@ -205,7 +210,7 @@ def test_login():
     }
     
     success, response = make_request(
-    "POST", "/auth/login", data=payload, expected_status=200
+    "POST", "/api/v1/auth/login", data=payload, expected_status=200
     )
     
     if success:
@@ -219,7 +224,7 @@ def test_get_credits():
     """Test get credits endpoint."""
     print_test("Get Credits Balance")
     
-    success, response = make_request("GET", "/credits/", expected_status=200)    
+    success, response = make_request("GET", "/api/v1/credits", expected_status=200)    
     
     if success:
         print_info(f"Credits: {response.get('credits')}")
@@ -235,7 +240,7 @@ def test_parse_resume():
     payload = {"resume_text": resume_text}
     
     success, response = make_request(
-    "POST", "/resume/parse", data=payload, expected_status=200
+    "POST", "/api/v1/resume/parse", data=payload, expected_status=200
     )
     
     if success:
@@ -257,7 +262,7 @@ def test_parse_jd():
     payload = {"jd_text": jd_text}
     
     success, response = make_request(
-    "POST", "/jd/parse", data=payload, expected_status=200
+    "POST", "/api/v1/jd/parse", data=payload, expected_status=200
     )
     
     if success:
@@ -279,7 +284,7 @@ def test_match():
         "jd_text": jd_text
     }
     
-    success, response = make_request("POST", "/match/", data=payload, expected_status=200)
+    success, response = make_request("POST", "/api/v1/match", data=payload, expected_status=200)
     
     if success:
         print_info(f"Match Score: {response.get('match_score')}/100")
@@ -288,8 +293,9 @@ def test_match():
         print_info(f"  Experience: {breakdown.get('experience_score')}/100 - {breakdown.get('experience_score_detail')}")
         print_info(f"  Education: {breakdown.get('education_score')}/100 - {breakdown.get('education_score_detail')}")
         
-        fitment = response.get('fitment_category', {})
-        print_info(f"Fitment: {fitment.get('emoji')} {fitment.get('label')}")
+        overall = response.get('overall_recommendation', '')
+        print_info(f"Overall Recommendation: {overall}")
+        print_info(f"Recommendation Detail: {response.get('recommendation_detail')}")
         
         print_info(f"Improvement Tips:")
         for i, tip in enumerate(response.get('improvement_tips', []), 1):
@@ -305,7 +311,7 @@ def test_get_transactions():
     print_test("Get Transactions")
     
     success, response = make_request(
-    "GET", "/billing/transactions", expected_status=200)
+    "GET", "/api/v1/billing/transactions", expected_status=200)
     
     if success:
         transactions = response.get('transactions', [])
@@ -358,10 +364,10 @@ def run_all_tests():
     print(f"\n{BLUE}Total: {passed}/{total} tests passed{END}")
     
     if passed == total:
-        print(f"\n{GREEN}🎉 All tests passed! API is production-ready!{END}\n")
+        print(f"\n{GREEN}SUCCESS: All tests passed! API is production-ready!{END}\n")
         return 0
     else:
-        print(f"\n{RED}⚠️  Some tests failed. Check configuration.{END}\n")
+        print(f"\n{RED}WARNING: Some tests failed. Check configuration.{END}\n")
         return 1
 
 

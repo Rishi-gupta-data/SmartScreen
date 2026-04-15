@@ -9,7 +9,7 @@ from backend.utils.deps import get_current_user
 router = APIRouter(prefix="/transactions", tags=["transactions"])
 
 
-@router.get("/", response_model=TransactionListResponse)
+@router.get("", response_model=TransactionListResponse)  # ✅ Normalized: no trailing slash
 def get_transactions(
     db: Session = Depends(get_db),
     current_user=Depends(get_current_user),

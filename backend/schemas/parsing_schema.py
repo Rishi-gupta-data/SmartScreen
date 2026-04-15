@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional, Dict, Any, List
 
 
@@ -6,7 +6,10 @@ from typing import Optional, Dict, Any, List
 
 class ResumeParseRequest(BaseModel):
     resume_text: str
-    file_name: Optional[str] = None
+    file_name: Optional[str] = Field(default=None, alias="filename")
+    
+    class Config:
+        populate_by_name = True  # Accept both file_name and filename
 
 
 class ExperienceEntry(BaseModel):
@@ -48,7 +51,10 @@ class ResumeParseResponse(BaseModel):
 
 class JDParseRequest(BaseModel):
     jd_text: str
-    file_name: Optional[str] = None
+    file_name: Optional[str] = Field(default=None, alias="filename")
+    
+    class Config:
+        populate_by_name = True  # Accept both file_name and filename
 
 
 class JDParseResponse(BaseModel):

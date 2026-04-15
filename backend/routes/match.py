@@ -17,7 +17,7 @@ class MatchRequestSimple(BaseModel):
     jd_text: str
 
 
-@router.post("/", response_model=MatchResponse)
+@router.post("")  # ✅ Normalized: no trailing slash
 def match_resume_to_jd(
     request: MatchRequestSimple,
     current_user=Depends(get_current_user),

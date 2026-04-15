@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import logging
 import os
+import time
 from backend.db.connection import engine, Base
 from backend.config import settings
 from backend.routes import auth_router, credit_router, billing_router, resume_router, jd_router, match_router
@@ -26,10 +27,28 @@ def create_app() -> FastAPI:
         version=settings.api_version,
         docs_url="/docs",
         redoc_url="/redoc" if not settings.is_production else None,
+        redirect_slashes=False,  # ✅ Disable automatic trailing slash redirect
     )
     
+    # ===== MIDDLEWARE: Request Logging =====
+    @app.middleware("http")
+    async def log_requests(request: Request, call_next):
+        """Log all incoming requests with timing."""
+        request_time = time.time()
+        response = await call_next(request)
+        process_time = time.time() - request_time
+        
+        # Log request details
+        logger.info(
+            f"{request.method} {request.url.path} | "
+            f"Status: {response.status_code} | "
+            f"Duration: {process_time:.3f}s"
+        )
+        
+        response.headers["X-Process-Time"] = str(process_time)
+        return response
+    
     # Add CORS middleware with configured origins
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins_list,
@@ -39,15 +58,18 @@ def create_app() -> FastAPI:
     )
 
     
-    # Include routers
-    app.include_router(auth_router)
-    app.include_router(credit_router)
-    app.include_router(billing_router)
-    app.include_router(resume_router)
-    app.include_router(jd_router)
-    app.include_router(match_router)
+    # ===== ROUTES: Include versioned routers =====
+    # Prefix all routes with /api/v1 for future compatibility
+    api_v1_prefix = "/api/v1"
     
-    logger.info(f"✅ SmartScreen API initialized ({settings.environment})")
+    app.include_router(auth_router, prefix=api_v1_prefix)
+    app.include_router(credit_router, prefix=api_v1_prefix)
+    app.include_router(billing_router, prefix=api_v1_prefix)
+    app.include_router(resume_router, prefix=api_v1_prefix)
+    app.include_router(jd_router, prefix=api_v1_prefix)
+    app.include_router(match_router, prefix=api_v1_prefix)
+    
+    logger.info(f"✅ SmartScreen API v{settings.api_version} initialized ({settings.environment})")
     return app
 
 
@@ -72,7 +94,7 @@ def root():
     return {
         "status": "ok",
         "service": "SmartScreen SaaS API",
-        "version": settings.api_version,
+        "version": f"v{settings.api_version}",
         "environment": settings.environment
     }
 
@@ -91,7 +113,7 @@ def health():
         return {
             "status": "healthy",
             "database": "connected",
-            "service": "SmartScreen API v" + settings.api_version
+            "service": f"SmartScreen API v{settings.api_version}"
         }
     except Exception as e:
         logger.error(f"Health check failed: {e}")
