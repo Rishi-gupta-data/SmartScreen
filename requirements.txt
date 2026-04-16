@@ -1,37 +1,89 @@
-# FastAPI and Web Framework
-fastapi>=0.104.0
-uvicorn[standard]>=0.24.0
-python-multipart>=0.0.6
+# ═══════════════════════════════════════════════════════════════════════════════
+# SmartScreen - Complete Requirements File
+# ═══════════════════════════════════════════════════════════════════════════════
+# Install with: pip install -r requirements.txt
+#
+# This file contains ALL packages needed for:
+# - Development
+# - Testing  
+# - Production
+# ═══════════════════════════════════════════════════════════════════════════════
 
-# Database
-SQLAlchemy>=2.0.0
-psycopg2-binary>=2.9.0  # PostgreSQL adapter
-alembic>=1.12.0  # Database migrations
+# ───────────────────────────────────────────────────────────────────────────────
+# 🔌 CORE WEB FRAMEWORK
+# ───────────────────────────────────────────────────────────────────────────────
+fastapi==0.115.8                          # Modern async web framework
+uvicorn[standard]==0.30.0                 # ASGI server
+python-multipart==0.0.6                   # Multipart form data handling
+httptools==0.6.2                          # HTTP parser (performance)
 
-# Authentication & Security
-python-jose[cryptography]>=3.3.0
-argon2-cffi>=23.1.0
-email-validator>=2.1.0
+# ───────────────────────────────────────────────────────────────────────────────
+# 💾 DATABASE & ORM
+# ───────────────────────────────────────────────────────────────────────────────
+sqlalchemy==2.0.45                        # SQL toolkit and ORM
+psycopg2-binary==2.9.10                   # PostgreSQL adapter for Python
+alembic==1.13.3                           # Database migrations
 
-# Configuration
-python-dotenv>=1.0.0
-pydantic>=2.0.0
-pydantic-settings>=2.0.0
+# ───────────────────────────────────────────────────────────────────────────────
+# 🔐 AUTHENTICATION & SECURITY
+# ───────────────────────────────────────────────────────────────────────────────
+python-jose[cryptography]==3.3.0          # JWT token handling
+pyjwt==2.10.1                             # JSON Web Token implementation
+argon2-cffi==25.1.0                       # Password hashing (Argon2)
+cryptography==43.0.0                      # Cryptographic recipes and primitives
+email-validator==2.2.0                    # Email validation with DNS lookups
 
-# Utilities
-requests>=2.31.0
+# ───────────────────────────────────────────────────────────────────────────────
+# ⚙️ CONFIGURATION & VALIDATION
+# ───────────────────────────────────────────────────────────────────────────────
+pydantic==2.10.6                          # Data validation using Python type hints
+pydantic-settings==2.7.1                  # Pydantic settings management
+python-dotenv==1.0.1                      # Load environment variables from .env
 
-# Development & Testing
-pytest>=7.4.0
-pytest-asyncio>=0.21.0
-httpx>=0.25.0
-black>=23.0.0
-flake8>=6.0.0  
+# ───────────────────────────────────────────────────────────────────────────────
+# 📝 LOGGING & MONITORING
+# ───────────────────────────────────────────────────────────────────────────────
+python-json-logger==3.2.1                 # JSON logging formatter
+structlog==24.4.0                         # Structured logging library
 
-# Logging
-python-json-logger>=2.0.0
+# ───────────────────────────────────────────────────────────────────────────────
+# 📡 HTTP CLIENT
+# ───────────────────────────────────────────────────────────────────────────────
+requests==2.31.0                          # HTTP library
 
-# NOTE: NO external LLM APIs
-# - Do NOT add openai, anthropic, google-ai, or other paid LLM packages
-# - Hugging Face models will be integrated later (transformers, torch as needed)
-# - All AI operations will use local/self-hosted models only
+# ───────────────────────────────────────────────────────────────────────────────
+# 🚀 PRODUCTION SERVER
+# ───────────────────────────────────────────────────────────────────────────────
+gunicorn==22.0.0                          # Python WSGI HTTP Server for production
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🧪 DEVELOPMENT & TESTING (optional for production)
+# ═══════════════════════════════════════════════════════════════════════════════
+pytest==7.4.0                             # Testing framework
+pytest-asyncio==0.21.0                    # AsyncIO support for pytest
+httpx==0.25.0                             # Async HTTP client for testing
+black==24.1.0                             # Code formatter
+flake8==6.0.0                             # Code linter
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 📦 OPTIONAL: MONITORING & OBSERVABILITY (commented - enable if needed)
+# ═══════════════════════════════════════════════════════════════════════════════
+# azure-monitor-opentelemetry==1.7.0    # Azure Application Insights
+# sentry-sdk==1.45.0                    # Error tracking and monitoring
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 🤖 OPTIONAL: AI/ML MODELS (commented - enable when needed)
+# ═══════════════════════════════════════════════════════════════════════════════
+# transformers==4.41.0                  # Hugging Face model library
+# torch==2.3.0                          # PyTorch (required by transformers)
+# accelerate==0.30.0                    # Model acceleration for inference
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# ⚠️ IMPORTANT NOTES
+# ═══════════════════════════════════════════════════════════════════════════════
+# 1. NO external LLM APIs (OpenAI, Anthropic, Google AI, etc.)
+# 2. All AI operations use local/self-hosted models only
+# 3. For production: Remove dev tools (pytest, black, flake8) if needed
+# 4. Database: Uses PostgreSQL/Neon (psycopg2-binary for connection)
+# 5. Auth: JWT tokens + Argon2 password hashing
+# ═══════════════════════════════════════════════════════════════════════════════

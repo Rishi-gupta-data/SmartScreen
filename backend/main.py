@@ -1,16 +1,17 @@
-from fastapi import FastAPI, Request
-from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import logging
 import os
+
+# ⚠️ CRITICAL: Load .env BEFORE importing database modules
+load_dotenv()
+
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 import time
 from backend.db.connection import engine, Base
 from backend.config import settings
-from backend.routes import auth_router, credit_router, billing_router, resume_router, jd_router, match_router
+from backend.routes import auth_router, credit_router, billing_router, resume_router, jd_router, match_router, admin_router
 from backend.models import user, transaction, usage  # register all ORM models with Base
-
-# Load environment variables
-load_dotenv()
 
 # Configure logging
 logging.basicConfig(
@@ -68,6 +69,7 @@ def create_app() -> FastAPI:
     app.include_router(resume_router, prefix=api_v1_prefix)
     app.include_router(jd_router, prefix=api_v1_prefix)
     app.include_router(match_router, prefix=api_v1_prefix)
+    app.include_router(admin_router, prefix=api_v1_prefix)
     
     logger.info(f"✅ SmartScreen API v{settings.api_version} initialized ({settings.environment})")
     return app

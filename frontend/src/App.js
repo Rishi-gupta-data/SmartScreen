@@ -17,6 +17,11 @@ import Match from './pages/Match';
 import Billing from './pages/Billing';
 import Transactions from './pages/Transactions';
 
+// Admin Pages
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminManagement from './pages/AdminManagement';
+
 function App() {
     return (
         <ThemeProvider theme={theme}>
@@ -27,6 +32,7 @@ function App() {
                         {/* Public Routes */}
                         <Route path="/login" element={<Login />} />
                         <Route path="/signup" element={<Signup />} />
+                        <Route path="/admin-login" element={<AdminLogin />} />
 
                         {/* Protected Routes */}
                         <Route
@@ -77,6 +83,10 @@ function App() {
                                 </ProtectedRoute>
                             }
                         />
+
+                        {/* Admin Routes */}
+                        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                        <Route path="/admin-management" element={<AdminManagement />} />
 
                         {/* Default Route */}
                         <Route path="/" element={<Navigate to="/dashboard" />} />
