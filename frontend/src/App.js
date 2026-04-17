@@ -1,53 +1,99 @@
-import React, { useState } from 'react';
-import {
-    ThemeProvider,
-    CssBaseline,
-    Container,
-    AppBar,
-    Toolbar,
-    Typography,
-    Box,
-} from '@mui/material';
+import React from 'react';
+import { ThemeProvider, CssBaseline } from '@mui/material';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import theme from './theme';
-import HomePage from './components/HomePage';
-import IndividualAnalysis from './components/IndividualAnalysis';
-import BulkAnalysis from './components/BulkAnalysis';
-import ResumeAnalysis from './components/ResumeAnalysis';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Auth Pages
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+
+// Protected Pages
+import Dashboard from './pages/Dashboard';
+import ResumeParse from './pages/ResumeParse';
+import JDParse from './pages/JDParse';
+import Match from './pages/Match';
+import Billing from './pages/Billing';
+import Transactions from './pages/Transactions';
+
+// Admin Pages
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminManagement from './pages/AdminManagement';
 
 function App() {
-    const [mode, setMode] = useState(null);
-    const [analysis, setAnalysis] = useState(null);
-
-    const renderContent = () => {
-        if (analysis) {
-            return <ResumeAnalysis analysis={analysis} onBack={() => setAnalysis(null)} />;
-        }
-
-        switch (mode) {
-            case 'individual':
-                return <IndividualAnalysis onBack={() => setMode(null)} setAnalysis={setAnalysis} />;
-            case 'recruiter':
-                return <BulkAnalysis onBack={() => setMode(null)} />;
-            default:
-                return <HomePage onModeSelect={setMode} />;
-        }
-    };
-
     return (
         <ThemeProvider theme={theme}>
             <CssBaseline />
-            <AppBar position="static" sx={{ backgroundColor: '#1a237e' }}>
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        SmartScreen ATS
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-            <Container maxWidth="lg" sx={{ py: 4 }}>
-                <Box sx={{ mt: 4 }}>
-                    {renderContent()}
-                </Box>
-            </Container>
+            <Router>
+                <AuthProvider>
+                    <Routes>
+                        {/* Public Routes */}
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/admin-login" element={<AdminLogin />} />
+
+                        {/* Protected Routes */}
+                        <Route
+                            path="/dashboard"
+                            element={
+                                <ProtectedRoute>
+                                    <Dashboard />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/resume"
+                            element={
+                                <ProtectedRoute>
+                                    <ResumeParse />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/jd"
+                            element={
+                                <ProtectedRoute>
+                                    <JDParse />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/match"
+                            element={
+                                <ProtectedRoute>
+                                    <Match />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/billing"
+                            element={
+                                <ProtectedRoute>
+                                    <Billing />
+                                </ProtectedRoute>
+                            }
+                        />
+                        <Route
+                            path="/transactions"
+                            element={
+                                <ProtectedRoute>
+                                    <Transactions />
+                                </ProtectedRoute>
+                            }
+                        />
+
+                        {/* Admin Routes */}
+                        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                        <Route path="/admin-management" element={<AdminManagement />} />
+
+                        {/* Default Route */}
+                        <Route path="/" element={<Navigate to="/dashboard" />} />
+                        <Route path="*" element={<Navigate to="/dashboard" />} />
+                    </Routes>
+                </AuthProvider>
+            </Router>
         </ThemeProvider>
     );
 }
